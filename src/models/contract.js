@@ -6,6 +6,7 @@ import {
   deployKycContract,
   deployAssetContract,
   writeContractMethod,
+  readContractMethod,
 } from '../services/api';
 
 export default {
@@ -73,6 +74,12 @@ export default {
       const response = yield call(writeContractMethod, params);
       if (response) {
         if (callback) callback(response.data.writeContractMethod);
+      }
+    },
+    *readContractMethod({ params, callback }, { call }) {
+      const response = yield call(readContractMethod, params);
+      if (response) {
+        if (callback) callback(response.data.readContractMethod)
       }
     },
   },

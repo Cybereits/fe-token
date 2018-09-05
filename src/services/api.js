@@ -378,6 +378,21 @@ export async function createMultiAccount(params) {
     });
 }
 
+export async function readContractMethod({ caller, contractName, methodName, paramArrInJson }) {
+  return client
+    .mutate({
+      fetchPolicy: 'no-cache',
+      mutation: gql`mutation {
+        readContractMethod(caller: "${caller}", contractName: "${contractName}", methodName: "${methodName}", paramArrInJson: "${encodeURIComponent(
+        paramArrInJson
+      )}")
+    }`,
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 export async function writeContractMethod({ caller, contractName, methodName, paramArrInJson }) {
   console.log(caller, contractName, methodName, paramArrInJson);
   return client

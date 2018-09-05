@@ -39,6 +39,7 @@ const { TabPane } = Tabs;
 
 @connect(({ loading }) => ({
   submittingWrite: loading.effects['contract/writeContractMethod'],
+  submittingQuery: loading.effects['contract/readContractMethod'],
 }))
 export default class CreateContract extends PureComponent {
   constructor(props) {
@@ -46,16 +47,17 @@ export default class CreateContract extends PureComponent {
     this.state = {
       contractName: JSON.parse(props.match.params.params).contractName,
       abis: JSON.parse(JSON.parse(props.match.params.params).abis),
-      writeAbisArr: [],
+      writeAbiFunctionForms: [],
+      queryAbiFunctionForms: [],
       methodName: '',
-      tabIndex: 1,
     };
   }
 
   componentDidMount = () => {
-    const writeAbisArr = [];
+    const writeForms = [];
+    const queryForms = [];
     this.state.abis.forEach(item => {
-      if (item.type === 'function' && item.constant === false) {
+      if (item.type === 'function') {
         /* eslint-disable*/
         class FormBasic extends React.Component {
           render() {
@@ -68,14 +70,14 @@ export default class CreateContract extends PureComponent {
                 }}
                 style={{ marginTop: 8 }}
               >
-                <FormItem {...formItemLayout} label="钱包地址">
+                <FormItem {...formItemLayout} label="调用钱包">
                   {getFieldDecorator('address', {
                     validateFirst: true,
                     rules: [
                       {
                         whitespace: true,
                         required: true,
-                        message: '钱包地址为必填项',
+                        message: '调用钱包地址为必填项',
                       },
                     ],
                   })(<Input style={{ width: '100%' }} placeholder="请输入钱包地址" />)}
@@ -105,15 +107,21 @@ export default class CreateContract extends PureComponent {
             );
           }
         }
-        writeAbisArr.push({ FormBasic, AbisName: item.name });
+        // 区分是写入还是查询函数
+        if (item.constant) {
+          queryForms.push({ FormBasic, AbisName: item.name })
+        } else {
+          writeForms.push({ FormBasic, AbisName: item.name });
+        }
       }
     });
     this.setState({
-      writeAbisArr,
+      writeAbiFunctionForms: writeForms,
+      queryAbiFunctionForms: queryForms,
     });
   };
 
-  writeContract = (e, validateFieldsAndScroll) => {
+  queryContract = (e, validateFieldsAndScroll, item) => {
     e.preventDefault();
     validateFieldsAndScroll((err, values) => {
       const paramArrInJson = [];
@@ -128,59 +136,102 @@ export default class CreateContract extends PureComponent {
         const newParams = {
           caller: values.address,
           contractName: this.state.contractName,
-          methodName: this.state.writeAbisArr[this.state.tabIndex - 1].AbisName,
+          methodName: item.AbisName,
+          paramArrInJson: JSON.stringify(paramArrInJson),
+        };
+        this.props.dispatch({
+          type: 'contract/readContractMethod',
+          params: newParams,
+          callback: res => {
+            Modal.success({
+              title: '调用成功',
+              content: res
+            })
+          },
+        });
+      }
+    });
+  }
+
+  writeContract = (e, validateFieldsAndScroll, item) => {
+    e.preventDefault();
+    validateFieldsAndScroll((err, values) => {
+      const paramArrInJson = [];
+      if (Object.keys(values).length > 1) {
+        Object.keys(values).map((item, index) => {
+          if (index > 0) {
+            paramArrInJson.push(values[item]);
+          }
+        });
+      }
+      if (!err) {
+        const newParams = {
+          caller: values.address,
+          contractName: this.state.contractName,
+          methodName: item.AbisName,
           paramArrInJson: JSON.stringify(paramArrInJson),
         };
         this.props.dispatch({
           type: 'contract/writeContractMethod',
           params: newParams,
           callback: txid => {
-            this.success(txid);
-            // message.success(`调用成功！txid为${txid}, 可在etherscan查询详情。`, 0);
+            Modal.success({
+              title: '调用成功',
+              content: `txid为${txid}, 可在etherscan查询详情。`,
+            });
           },
         });
       }
     });
   };
 
-  success = txid => {
-    Modal.success({
-      title: '调用成功',
-      content: `txid为${txid}, 可在etherscan查询详情。`,
-    });
-  };
-
   render() {
-    const { submittingWrite } = this.props;
+    const { submittingWrite, submittingQuery } = this.props;
     return (
-      <PageHeaderLayout title="合约方法">
-        <Tabs
-          onChange={key => {
-            this.setState({
-              tabIndex: key,
-            });
-          }}
-          defaultActiveKey="1"
-          size="large"
-          tabBarStyle={{ backgroundColor: '#fff', marginBottom: 0 }}
-        >
-          {this.state.writeAbisArr.map((item, index) => {
-            const FormBasicWraper = Form.create({})(item.FormBasic);
-            return (
-              <TabPane tab={item.AbisName} key={index + 1}>
-                <Card bordered={false}>
-                  <FormBasicWraper
-                    submitting={submittingWrite}
-                    handleSubmit={(e, validateFieldsAndScroll) => {
-                      this.writeContract(e, validateFieldsAndScroll);
-                    }}
-                  />
-                </Card>
-              </TabPane>
-            );
-          })}
-        </Tabs>
-      </PageHeaderLayout>
+      <div>
+        <PageHeaderLayout title="调用合约函数">
+          <h2>查询</h2>
+          <Tabs
+            defaultActiveKey="1"
+            size="large"
+            tabBarStyle={{ backgroundColor: '#fff', marginBottom: 0 }}
+          >
+            {this.state.queryAbiFunctionForms.map((item, index) => {
+              const FormBasicWraper = Form.create({})(item.FormBasic);
+              return (
+                <TabPane tab={item.AbisName} key={index + 1}>
+                  <Card bordered={false}>
+                    <FormBasicWraper
+                      submitting={submittingQuery}
+                      handleSubmit={(e, validateFieldsAndScroll) => this.queryContract(e, validateFieldsAndScroll, item)}
+                    />
+                  </Card>
+                </TabPane>
+              );
+            })}
+          </Tabs>
+          <h2 style={{ marginTop: '8px' }}>写入</h2>
+          <Tabs
+            defaultActiveKey="1"
+            size="large"
+            tabBarStyle={{ backgroundColor: '#fff', marginBottom: 0 }}
+          >
+            {this.state.writeAbiFunctionForms.map((item, index) => {
+              const FormBasicWraper = Form.create({})(item.FormBasic);
+              return (
+                <TabPane tab={item.AbisName} key={index + 1}>
+                  <Card bordered={false}>
+                    <FormBasicWraper
+                      submitting={submittingWrite}
+                      handleSubmit={(e, validateFieldsAndScroll) => this.writeContract(e, validateFieldsAndScroll, item)}
+                    />
+                  </Card>
+                </TabPane>
+              );
+            })}
+          </Tabs>
+        </PageHeaderLayout>
+      </div>
     );
   }
 }

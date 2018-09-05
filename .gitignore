@@ -1,0 +1,23 @@
+# npm packages
+node_modules/
+
+# logs
+*.log
+npm-debug.log*
+
+# roadhog-api-doc ignore
+request-temp.js
+_roadhog-api-doc
+
+# production
+dist
+
+# editor
+vscode
+jsconfig.json
+
+# misc
+.DS_Store
+
+# test
+coverage

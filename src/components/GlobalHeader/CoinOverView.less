@@ -1,0 +1,41 @@
+@import '~antd/lib/style/themes/default.less';
+
+.container {
+  display: flex;
+  margin: -66px auto;
+  width: 72%;
+  height: 64px;
+  background-color: #fff;
+  .statusContainer {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    > div {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      line-height: 18px;
+    }
+  }
+  .balanceContainer {
+    display: flex;
+    flex: 3;
+    overflow-x: scroll;
+    overflow-y: none;
+    .balanceCell {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 18px;
+      margin: 0 12px;
+      text-align: center;
+    }
+  }
+}
+
+@media screen and (max-width: @screen-sm) {
+  .container {
+    display: none;
+  }
+}

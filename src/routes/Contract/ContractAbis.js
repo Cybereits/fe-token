@@ -83,6 +83,7 @@ export default class CreateContract extends PureComponent {
                   })(<Input style={{ width: '100%' }} placeholder="请输入钱包地址" />)}
                 </FormItem>
                 {item.inputs.map((item, index) => {
+                  item.name = item.name || `${item.type}_${index}`
                   return (
                     <FormItem {...formItemLayout} label={item.name} key={index}>
                       {getFieldDecorator(item.name, {

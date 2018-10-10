@@ -76,8 +76,6 @@ export default class CreateContract extends PureComponent {
                     rules: [
                       {
                         whitespace: true,
-                        required: true,
-                        message: '调用钱包地址为必填项',
                       },
                     ],
                   })(<Input style={{ width: '100%' }} placeholder="请输入钱包地址" />)}
@@ -135,7 +133,7 @@ export default class CreateContract extends PureComponent {
       }
       if (!err) {
         const newParams = {
-          caller: values.address,
+          caller: values.address || '',
           contractName: this.state.contractName,
           methodName: item.AbisName,
           paramArrInJson: JSON.stringify(paramArrInJson),

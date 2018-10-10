@@ -414,25 +414,7 @@ export default class SearchContract extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm(statusEnum, tokenTypeEnum)}</div>
-            <div className={styles.tableListOperator}>
-              {/* <Button
-                icon="rocket"
-                type="primary"
-                onClick={() => {
-                  this.handleModalVisible(true);
-                }}
-              >
-                创建发送任务
-              </Button> */}
-              {/* <span>
-                 <Button>批量操作</Button> 
-                <Dropdown overlay={menu}>
-                  <Button>
-                    更多操作 <Icon type="down" />
-                  </Button>
-                </Dropdown>
-              </span> */}
-            </div>
+            <div className={styles.tableListOperator}></div>
             <StandardTable
               selectedRows={selectedRows}
               loading={loading}

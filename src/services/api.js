@@ -177,6 +177,8 @@ export async function queryServerStates() {
           queryServerStates {
             currentBlockHeight
             gasPrice
+            gasFee
+            gasCost
           },
           tokenBalanceOverview{
             name

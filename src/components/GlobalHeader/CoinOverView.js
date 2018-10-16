@@ -27,15 +27,9 @@ class CoinOverView extends React.Component {
   }
 
   render() {
-    const { global: { tokenBalanceOverviewList, currentBlockHeight, gasPrice } } = this.props;
+    const { global: { tokenBalanceOverviewList, currentBlockHeight, gasPrice, gasFee, gasCost } } = this.props;
     return (
       <div className={styles.container}>
-        <div className={styles.statusContainer}>
-          <div>当前区块高度：{currentBlockHeight}</div>
-          <div>
-            当前油价：{(+gasPrice).toFixed(10)} ({(Math.round(+gasPrice * (10 ** 11)) / 100).toFixed(2)} GWei)
-          </div>
-        </div>
         <div className={styles.balanceContainer}>
           {tokenBalanceOverviewList.map((item, index) => {
             return (
@@ -45,6 +39,18 @@ class CoinOverView extends React.Component {
               </div>
             );
           })}
+        </div>
+        <div className={styles.statusContainer}>
+          <div>当前区块高度：{currentBlockHeight}</div>
+          <div>
+            当前油价：{(+gasPrice).toFixed(10)} ({(Math.round(+gasPrice * (10 ** 11)) / 100).toFixed(2)} GWei)
+          </div>
+          <div>
+            当前油费：{gasFee}
+          </div>
+          <div>
+            当前转账花费：{gasCost}
+          </div>
         </div>
       </div>
     );

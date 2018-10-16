@@ -9,6 +9,8 @@ export default {
     tokenBalanceOverviewList: [],
     currentBlockHeight: '',
     gasPrice: '',
+    gasFee: '',
+    gasCost: '',
   },
 
   effects: {
@@ -74,6 +76,8 @@ export default {
         ...state,
         currentBlockHeight: payload.currentBlockHeight,
         gasPrice: payload.gasPrice,
+        gasFee: payload.gasFee,
+        gasCost: payload.gasCost,
       };
     },
     saveTokenBalanceOverview(state, { payload }) {

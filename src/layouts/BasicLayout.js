@@ -14,11 +14,11 @@ import NotFound from '../routes/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
-// import FlexHeader from './FlexHeader';
-import logo from '../assets/logo.svg';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
+
+const LOGO = "/logo-cre.png";
 
 /**
  * 根据菜单取得重定向地址.
@@ -186,7 +186,7 @@ class BasicLayout extends React.PureComponent {
     const layout = (
       <Layout>
         <SiderMenu
-          logo={logo}
+          logo={LOGO}
           // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
@@ -199,23 +199,8 @@ class BasicLayout extends React.PureComponent {
         />
         <Layout>
           <Header style={{ padding: 0 }}>
-            {/* <FlexHeader collapsed={collapsed} /> */}
-            {/* <div style={{display: 'flex', position: 'fixed', width: '65%', top: 0, left: !collapsed ? '256px' : '80px', right: 0, zIndex: 1, margin: '0 auto', backgroundColor: 'transparent'}}>
-              <div>
-                <div>ETH</div>
-                <div>10000</div>
-              </div>
-              <div>
-                <div>CRE</div>
-                <div>10000</div>
-              </div>
-              <div>
-                <div>BTC</div>
-                <div>10000</div>
-              </div>
-            </div> */}
             <GlobalHeader
-              logo={logo}
+              logo={LOGO}
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
               notices={notices}

@@ -98,8 +98,8 @@ export default class SiderMenu extends PureComponent {
         onClick={
           this.props.isMobile
             ? () => {
-                this.props.onCollapse(true);
-              }
+              this.props.onCollapse(true);
+            }
             : undefined
         }
       >
@@ -125,8 +125,8 @@ export default class SiderMenu extends PureComponent {
                   <span>{item.name}</span>
                 </span>
               ) : (
-                item.name
-              )
+                  item.name
+                )
             }
             key={item.path}
           >
@@ -189,14 +189,14 @@ export default class SiderMenu extends PureComponent {
     });
   };
   render() {
-    const { collapsed, onCollapse } = this.props;
+    const { collapsed, onCollapse, logo } = this.props;
     const { openKeys } = this.state;
     // Don't show popup menu when it is been collapsed
     const menuProps = collapsed
       ? {}
       : {
-          openKeys,
-        };
+        openKeys,
+      };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys();
     if (!selectedKeys.length) {
@@ -214,7 +214,7 @@ export default class SiderMenu extends PureComponent {
       >
         <div className={styles.logo} key="logo">
           <Link to="/">
-            <img src="/logo-cre.png" alt="logo" />
+            <img src={logo} alt="logo" />
             <h1>代币管理系统</h1>
           </Link>
         </div>

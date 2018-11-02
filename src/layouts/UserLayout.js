@@ -4,26 +4,7 @@ import DocumentTitle from 'react-document-title';
 import { Icon } from 'antd';
 import GlobalFooter from '../components/GlobalFooter';
 import styles from './UserLayout.less';
-// import logo from '../assets/logo.svg';
 import { getRoutes } from '../utils/utils';
-
-// const links = [
-//   {
-//     key: 'help',
-//     title: '帮助',
-//     href: '',
-//   },
-//   {
-//     key: 'privacy',
-//     title: '隐私',
-//     href: '',
-//   },
-//   {
-//     key: 'terms',
-//     title: '条款',
-//     href: '',
-//   },
-// ];
 
 const copyright = (
   <Fragment>

@@ -176,7 +176,7 @@ export default class CreateContract extends PureComponent {
           callback: txid => {
             Modal.success({
               title: '调用成功',
-              content: `txid为${txid}, 可在etherscan查询详情。`,
+              content: `txid为${txid}, 可在 https://etherscan.io/tx/${txid} 查询详情。`,
             });
           },
         });

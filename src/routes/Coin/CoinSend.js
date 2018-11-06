@@ -734,7 +734,7 @@ export default class TableList extends PureComponent {
                   <Card bordered={false}>
                     <DescriptionList col={1} size="large">
                       <Description term="txid">
-                        <a href={`https://etherscan.io/tx/${item.txid}`}>{item.txid}</a>
+                        <a target="_blank" href={`https://etherscan.io/tx/${item.txid}`}>{item.txid}</a>
                       </Description>
                       <Description term="发送时间">{item.sendTime}</Description>
                       <Description term="确认时间">{item.confirmTime}</Description>

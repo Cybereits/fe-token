@@ -175,6 +175,7 @@ export async function queryServerStates() {
       query: gql`
         {
           queryServerStates {
+            uri
             currentBlockHeight
             gasPrice
             gasFee

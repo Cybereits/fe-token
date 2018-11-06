@@ -27,20 +27,23 @@
     right: 12px;
     top: 64px;
     padding: 2px 5px;
-    display: flex;
-    flex-direction: row;
     background-color: rgba(6, 140, 158, 0.596);
     border-top: none;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
-    > div {
-      flex: 1;
+    z-index: 99;
+    .infoContainer{
       display: flex;
-      align-items: center;
-      white-space: nowrap;
-      line-height: 28px;
-      margin: 0 12px;
-      color: #ffffff;
+      flex-direction: row;
+      > div {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        line-height: 28px;
+        margin: 0 12px;
+        color: #ffffff;
+      }
     }
   }
 }

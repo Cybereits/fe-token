@@ -7,10 +7,7 @@ export default {
     collapsed: true,
     notices: [],
     tokenBalanceOverviewList: [],
-    currentBlockHeight: '',
-    gasPrice: '',
-    gasFee: '',
-    gasCost: '',
+    serverStateInfoList: [],
   },
 
   effects: {
@@ -74,10 +71,7 @@ export default {
     saveServerState(state, { payload }) {
       return {
         ...state,
-        currentBlockHeight: payload.currentBlockHeight,
-        gasPrice: payload.gasPrice,
-        gasFee: payload.gasFee,
-        gasCost: payload.gasCost,
+        serverStateInfoList: payload,
       };
     },
     saveTokenBalanceOverview(state, { payload }) {

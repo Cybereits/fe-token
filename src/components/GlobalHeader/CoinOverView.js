@@ -42,21 +42,19 @@ class CoinOverView extends React.Component {
         </div>
         <div className={styles.statusContainer}>
           {
-            serverStateInfoList.map(({ uri, currentBlockHeight, gasPrice, gasFee, gasCost }) =>
+            serverStateInfoList.map(({ uri, enable, currentBlockHeight, gasPrice }) =>
               (
-                <div className={styles.infoContainer}>
-                  <div>钱包客户端：{uri}</div>
-                  <div>当前区块高度：{currentBlockHeight}</div>
-                  <div>
-                    当前油价：{(+gasPrice).toFixed(10)} ({(Math.round(+gasPrice * (10 ** 11)) / 100).toFixed(2)} GWei)
+                enable ?
+                  <div className={styles.infoContainer}>
+                    <div>钱包客户端：{uri}</div>
+                    <div>当前区块高度：{currentBlockHeight}</div>
+                    <div>
+                      当前油价：{(+gasPrice).toFixed(10)} ({(Math.round(+gasPrice * (10 ** 11)) / 100).toFixed(2)} GWei)
                   </div>
-                  <div>
-                    当前油费：{gasFee}
+                  </div> :
+                  <div className={styles.infoContainer}>
+                    <div>钱包客户端：{uri} 当前不可用</div>
                   </div>
-                  <div>
-                    当前转账花费：{gasCost}
-                  </div>
-                </div>
               )
             )
           }

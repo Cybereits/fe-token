@@ -176,10 +176,9 @@ export async function queryServerStates() {
         {
           queryServerStates {
             uri
+            enable
             currentBlockHeight
             gasPrice
-            gasFee
-            gasCost
           },
           tokenBalanceOverview{
             name

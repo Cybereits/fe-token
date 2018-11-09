@@ -9,8 +9,6 @@ const EVENT_TYPES = {
   txDetected: 'txDetected',
   txConfirmed: 'txConfirmed',
   txError: 'txError',
-  gethError: 'gethError',
-  gethEnable: 'gethEnable',
   serverState: 'serverState',
   balanceUpdated: 'balanceUpdated',
   connected: 'connected',
@@ -34,6 +32,9 @@ class SocketClient {
     this.client.on('connect_error', onConnectError)
     this.client.on('connect_timeout', onTimeout)
     this.client.on(EVENT_TYPES.connected, (data) => notify('链接成功', data))
+    this.client.on(EVENT_TYPES.txConfirmed, ([txid]) => notify(`交易已确认`, txid, { url: `https://etherscan.io/tx/${txid}`, requireInteraction: true }))
+    this.client.on(EVENT_TYPES.txError, ([txid, reason]) => notify(`交易失败 ${txid}`, `失败原因: ${reason}`, { url: `https://etherscan.io/tx/${txid}`, requireInteraction: true }))
+    this.client.on(EVENT_TYPES.txDetected, (address) => notify(`检测到链上交易`, `来自钱包: ${address}`, { url: `https://etherscan.io/address/${address}` }))
   }
 
   /**
@@ -72,16 +73,18 @@ class SocketClient {
 
 export default function init({ dispatch }) {
   const ws = new SocketClient()
+
   ws.register(EVENT_TYPES.serverState, (data) => {
     dispatch({
       type: 'global/updateServerState',
-      status: JSON.parse(data),
+      status: data,
     })
   })
+
   ws.register(EVENT_TYPES.balanceUpdated, (data) => {
     dispatch({
       type: 'global/updateTokenBalance',
-      balances: JSON.parse(data),
+      balances: data,
     })
   })
 }

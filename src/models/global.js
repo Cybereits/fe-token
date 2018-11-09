@@ -1,4 +1,4 @@
-import { queryNotices, queryServerStates } from '../services/api';
+import { queryNotices } from '../services/api';
 
 export default {
   namespace: 'global',
@@ -33,19 +33,17 @@ export default {
         payload: count,
       });
     },
-    *updateServerState(_, { call, put }) {
-      const response = yield call(queryServerStates);
-      if (response) {
-        const { data: { queryServerStates: serverStates, tokenBalanceOverview } } = response;
-        yield put({
-          type: 'saveServerState',
-          payload: serverStates,
-        });
-        yield put({
-          type: 'saveTokenBalanceOverview',
-          payload: tokenBalanceOverview,
-        });
-      }
+    *updateServerState({ status }, { put }) {
+      yield put({
+        type: 'saveServerState',
+        status,
+      })
+    },
+    *updateTokenBalance({ balances }, { put }) {
+      yield put({
+        type: 'saveTokenBalanceOverview',
+        balances,
+      })
     },
   },
 
@@ -68,16 +66,37 @@ export default {
         notices: state.notices.filter(item => item.type !== payload),
       };
     },
-    saveServerState(state, { payload }) {
-      return {
-        ...state,
-        serverStateInfoList: payload,
-      };
+    saveServerState(state, { status }) {
+      const oldList = state.serverStateInfoList
+
+      if (status) {
+        const newList = []
+
+        oldList.forEach(item => {
+          if (item.uri === status.uri) {
+            newList.push(status)
+          } else {
+            newList.push(item)
+          }
+        })
+
+        if (newList.indexOf(status) === -1) {
+          newList.push(status)
+        }
+
+        return {
+          ...state,
+          serverStateInfoList: newList,
+        }
+      } else {
+        return state
+      }
+
     },
-    saveTokenBalanceOverview(state, { payload }) {
+    saveTokenBalanceOverview(state, { balances }) {
       return {
         ...state,
-        tokenBalanceOverviewList: payload,
+        tokenBalanceOverviewList: balances,
       };
     },
   },

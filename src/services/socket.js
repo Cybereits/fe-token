@@ -9,15 +9,17 @@ const EVENT_TYPES = {
   txDetected: 'txDetected',
   txConfirmed: 'txConfirmed',
   txError: 'txError',
+  gethError: 'gethError',
+  gethEnable: 'gethEnable',
+  serverState: 'serverState',
   balanceUpdated: 'balanceUpdated',
-  clientError: 'clientError',
-  test: 'test info',
+  connected: 'connected',
 }
 
 
 const NOOP = () => { }
 
-export default class SocketClient {
+class SocketClient {
 
   constructor({
     path = '/io',
@@ -31,9 +33,7 @@ export default class SocketClient {
     this.client.on('error', onError)
     this.client.on('connect_error', onConnectError)
     this.client.on('connect_timeout', onTimeout)
-    Object.values(EVENT_TYPES).forEach(eventName =>
-      this.client.on(eventName, (data) => notify(eventName, data))
-    )
+    this.client.on(EVENT_TYPES.connected, (data) => notify('链接成功', data))
   }
 
   /**
@@ -67,4 +67,21 @@ export default class SocketClient {
       this.client = null
     }
   }
+}
+
+
+export default function init({ dispatch }) {
+  const ws = new SocketClient()
+  ws.register(EVENT_TYPES.serverState, (data) => {
+    dispatch({
+      type: 'global/updateServerState',
+      status: JSON.parse(data),
+    })
+  })
+  ws.register(EVENT_TYPES.balanceUpdated, (data) => {
+    dispatch({
+      type: 'global/updateTokenBalance',
+      balances: JSON.parse(data),
+    })
+  })
 }

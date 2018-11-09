@@ -10,20 +10,6 @@ class CoinOverView extends React.Component {
     this.props.dispatch({
       type: 'global/updateServerState',
     });
-    this.releaseItv();
-    this.stateItv = setInterval(() => {
-      this.props.dispatch({
-        type: 'global/updateServerState',
-      });
-    }, 1000 * 20);
-  }
-
-  componentWillUnmount() {
-    this.releaseItv();
-  }
-
-  releaseItv() {
-    clearInterval(this.stateItv);
   }
 
   render() {
@@ -42,19 +28,15 @@ class CoinOverView extends React.Component {
         </div>
         <div className={styles.statusContainer}>
           {
-            serverStateInfoList.map(({ uri, enable, currentBlockHeight, gasPrice }) =>
+            serverStateInfoList.map(({ uri, currentBlockHeight, gasPrice }) =>
               (
-                enable ?
-                  <div className={styles.infoContainer}>
-                    <div>钱包客户端：{uri}</div>
-                    <div>当前区块高度：{currentBlockHeight}</div>
-                    <div>
-                      当前油价：{(+gasPrice).toFixed(10)} ({(Math.round(+gasPrice * (10 ** 11)) / 100).toFixed(2)} GWei)
+                <div className={styles.infoContainer}>
+                  <div>钱包客户端：{uri}</div>
+                  <div>当前区块高度：{currentBlockHeight}</div>
+                  <div>
+                    当前油价：{(+gasPrice).toFixed(10)} ({(Math.round(+gasPrice * (10 ** 11)) / 100).toFixed(2)} GWei)
                   </div>
-                  </div> :
-                  <div className={styles.infoContainer}>
-                    <div>钱包客户端：{uri} 当前不可用</div>
-                  </div>
+                </div>
               )
             )
           }

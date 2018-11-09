@@ -4,7 +4,6 @@ import { message } from 'antd';
 import gql from 'graphql-tag';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
-// import { errorMesage } from '../utils/networkErrorMsg';
 import request from '../utils/request';
 import { toGql, stringifyToGql } from '../utils/utils';
 import config from '../../config/env.json';
@@ -166,30 +165,6 @@ export async function fakeRegister(params) {
 
 export async function queryNotices() {
   return request('/api/notices');
-}
-
-export async function queryServerStates() {
-  return client
-    .query({
-      fetchPolicy: 'network-only',
-      query: gql`
-        {
-          queryServerStates {
-            uri
-            enable
-            currentBlockHeight
-            gasPrice
-          },
-          tokenBalanceOverview{
-            name
-            value
-          }
-        }
-      `,
-    })
-    .catch(err => {
-      console.log(err);
-    });
 }
 
 export async function getAccountList() {

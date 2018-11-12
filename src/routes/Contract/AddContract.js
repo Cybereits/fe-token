@@ -4,18 +4,11 @@ import { connect } from 'dva';
 import {
   Form,
   Input,
-  // DatePicker,
-  // Select,
   Button,
   Card,
   message,
-  // InputNumber,
-  // Radio,
-  // Icon,
-  // Tooltip,
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-// import styles from './CoinSend.less';
 
 const FormItem = Form.Item;
 // const { Option } = Select;
@@ -27,12 +20,6 @@ const { TextArea } = Input;
 }))
 @Form.create()
 export default class AddContract extends PureComponent {
-  componentDidMount = () => {
-    // this.props.dispatch({
-    //   type: 'coinTask/tokenTypeEnum',
-    // });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     const { dispatch, form } = this.props;
@@ -48,10 +35,9 @@ export default class AddContract extends PureComponent {
           newParam[item] = +newParam[item];
         }
       });
-      const newFieldsValue = { ...newParam };
       dispatch({
         type: 'contract/addERC20ContractMeta',
-        params: newFieldsValue,
+        params: newParam,
         callback: () => {
           console.log('success');
           message.success('添加合约成功');

@@ -781,7 +781,7 @@ export async function addERC20ContractMeta(params) {
       mutation: gql`mutation {
         addERC20ContractMeta(name: "${params.name}", symbol: "${params.symbol}", decimal: ${
         params.decimal
-      },codes: "${params.codes}",abis: "${params.abis}",address: "${params.address}")
+      },codes: "${params.codes}",abis: ${JSON.stringify(params.abis)},address: "${params.address}")
     }`,
     })
     .catch(err => {

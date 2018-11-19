@@ -425,7 +425,7 @@ export default class CreateContract extends PureComponent {
   render() {
     const { submittingCoin, submittingKyc, submittingAsset } = this.props;
     return (
-      <PageHeaderLayout title="创建转账任务">
+      <PageHeaderLayout>
         <Tabs
           defaultActiveKey="1"
           size="large"

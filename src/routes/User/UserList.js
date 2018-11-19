@@ -159,7 +159,7 @@ export default class UserList extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="用户列表">
+      <PageHeaderLayout>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{}</div>

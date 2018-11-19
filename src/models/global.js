@@ -70,23 +70,17 @@ export default {
       const oldList = state.serverStateInfoList
 
       if (status) {
-        const newList = []
+        const newState = {}
 
         oldList.forEach(item => {
-          if (item.uri === status.uri) {
-            newList.push(status)
-          } else {
-            newList.push(item)
-          }
+          newState[item.uri] = item
         })
 
-        if (newList.indexOf(status) === -1) {
-          newList.push(status)
-        }
+        newState[status.uri] = status
 
         return {
           ...state,
-          serverStateInfoList: newList,
+          serverStateInfoList: Object.values(newState),
         }
       } else {
         return state

@@ -69,7 +69,7 @@ export default class AddContract extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="添加合约">
+      <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} label="合约名称">

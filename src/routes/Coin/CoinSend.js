@@ -698,7 +698,7 @@ export default class TableList extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="代币发放">
+      <PageHeaderLayout>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm(statusEnum, tokenTypeEnum)}</div>

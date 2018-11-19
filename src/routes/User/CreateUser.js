@@ -70,7 +70,7 @@ export default class CreateUser extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="创建用户">
+      <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} label="用户名">

@@ -188,7 +188,7 @@ export default class CreateContract extends PureComponent {
     const { submittingWrite, submittingQuery } = this.props;
     return (
       <div>
-        <PageHeaderLayout title="调用合约函数">
+        <PageHeaderLayout>
           <h2>查询</h2>
           <Tabs
             defaultActiveKey="1"

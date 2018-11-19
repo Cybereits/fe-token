@@ -89,7 +89,7 @@ export default class ChangePwd extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="修改密码">
+      <PageHeaderLayout>
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} label="原密码">

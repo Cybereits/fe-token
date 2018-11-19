@@ -66,7 +66,7 @@ class GatherForm extends React.Component {
                 },
               ],
             })(
-              <TextArea autosize={{ minRows: 10, maxRows: 20 }} placeholder="请输入transactions" />
+              <TextArea autosize={{ minRows: 10, maxRows: 20 }} placeholder="请输入地址" />
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="代币类型">
@@ -180,7 +180,7 @@ export default class CoinGather extends PureComponent {
     const { submitting, coinTask: { tokenTypeEnum } } = this.props;
 
     return (
-      <PageHeaderLayout title="创建转账任务">
+      <PageHeaderLayout>
         <Card bordered={false}>
           <GatherForm_
             submitting={submitting}

@@ -412,7 +412,7 @@ export default class CreateTask extends PureComponent {
     } = this.props;
 
     return (
-      <PageHeaderLayout title="创建转账任务">
+      <PageHeaderLayout>
         <Tabs
           onChange={activeKey => {
             this.setState({

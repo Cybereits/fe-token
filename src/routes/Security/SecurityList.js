@@ -135,7 +135,7 @@ export default class SecurityList extends React.Component {
     ];
 
     return (
-      <PageHeaderLayout title="安全中心">
+      <PageHeaderLayout>
         <div className={styles.standardList}>
           <Card className={styles.listCard} bordered={false} style={{ marginTop: 24 }}>
             <List

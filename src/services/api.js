@@ -21,41 +21,19 @@ const client = new ApolloClient({
   },
   uri: `${host}${port ? `:${port}` : ''}${baseUrl}`,
   onError: ({ graphQLErrors }) => {
-    console.log('graphQLErrors', graphQLErrors);
-    if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].message !== 'Not logged in') {
-      message.error(graphQLErrors[0].message);
+    if (graphQLErrors && graphQLErrors.length > 0) {
+      // 对于未授权的处理 不再将错误信息弹出 而是直接跳转到登陆界面
       if (graphQLErrors[0].message === 'Unauthorized!') {
         const currentAuthority = '';
         setAuthority(currentAuthority);
         reloadAuthorized();
         window.location.href = `${window.location.origin}/#/entry/login`;
+      } else {
+        message.error(graphQLErrors[0].message);
       }
     }
   },
 });
-
-// const loginClient = new ApolloClient({
-//   request: async operation => {
-//     operation.setContext({
-//       fetchOptions: {
-//         credentials: 'include',
-//       },
-//     });
-//   },
-//   uri: `${host}${port ? `:${port}` : ''}${publicUrl}`,
-//   onError: ({ graphQLErrors }) => {
-//     console.log('graphQLErrors', graphQLErrors);
-//     if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].message !== 'Not logged in') {
-//       message.error(graphQLErrors[0].message);
-//       if (graphQLErrors[0].message === 'Unauthorized!') {
-//         const currentAuthority = '';
-//         setAuthority(currentAuthority);
-//         reloadAuthorized();
-//         window.location.href = `${window.location.origin}/#/entry/login`;
-//       }
-//     }
-//   },
-// });
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -197,8 +175,8 @@ export async function queryAllBalance({ pageIndex, pageSize, filter }) {
       query: gql`
         {
           queryAllBalance(pageIndex: ${pageIndex}, pageSize: ${pageSize}, filter: ${toGql(
-        newFilter
-      )}) {
+          newFilter
+        )}) {
             pagination {
               total
               current
@@ -292,8 +270,8 @@ export async function createBatchTransactions({ transaction, comment }) {
       mutation: gql`
         mutation {
           createBatchTransactions(transactions: ${stringifyToGql(
-            JSON.stringify(transaction)
-          )}, comment: "${comment}") {
+          JSON.stringify(transaction)
+        )}, comment: "${comment}") {
             id,
             count,
             comment,
@@ -314,8 +292,8 @@ export async function gatherAllTokens({ gatherAddress, fromAddresses, tokenType 
       mutation: gql`
         mutation {
           gatherAllTokens(fromAddresses: ${JSON.stringify(
-            fromAddresses
-          )}, gatherAddress: "${gatherAddress}", tokenType: "${tokenType}")
+          fromAddresses
+        )}, gatherAddress: "${gatherAddress}", tokenType: "${tokenType}")
         }
       `,
     })
@@ -347,7 +325,7 @@ export async function createMultiAccount(params) {
       mutation: gql`mutation {
       createMultiAccount(count: ${params.walletAmount}, comment: "${params.comment}", password: "${
         params.password
-      }")
+        }")
     }`,
     })
     .catch(err => {
@@ -361,8 +339,8 @@ export async function readContractMethod({ caller, contractName, methodName, par
       fetchPolicy: 'no-cache',
       mutation: gql`mutation {
         readContractMethod(caller: "${caller}", contractName: "${contractName}", methodName: "${methodName}", paramArrInJson: "${encodeURIComponent(
-        paramArrInJson
-      )}")
+          paramArrInJson
+        )}")
     }`,
     })
     .catch(err => {
@@ -377,8 +355,8 @@ export async function writeContractMethod({ caller, contractName, methodName, pa
       fetchPolicy: 'no-cache',
       mutation: gql`mutation {
         writeContractMethod(caller: "${caller}", contractName: "${contractName}", methodName: "${methodName}", paramArrInJson: "${encodeURIComponent(
-        paramArrInJson
-      )}")
+          paramArrInJson
+        )}")
     }`,
     })
     .catch(err => {
@@ -625,7 +603,7 @@ export async function changePwd(params) {
       mutation: gql`mutation {
         changePwd(originPassword:"${params.originPassword}",newPassword:"${
         params.newPassword
-      }",validPassword:"${params.validPassword}") {
+        }",validPassword:"${params.validPassword}") {
           username,
           role,
         }
@@ -644,7 +622,7 @@ export async function editTransaction(params) {
       mutation: gql`mutation {
         editTransaction(id:"${params.id}",outAccount:"${params.from}",to:"${params.to}", amount:${
         params.amount
-      }) {
+        }) {
           id,
         }
     }`,
@@ -741,7 +719,7 @@ export async function deployKycContract(params) {
       mutation: gql`mutation {
         deployKycContract(deployer: "${newParams.address}", contractName: "${
         newParams.contractName
-      }")
+        }")
     }`,
     })
     .catch(err => {
@@ -781,7 +759,7 @@ export async function addERC20ContractMeta(params) {
       mutation: gql`mutation {
         addERC20ContractMeta(name: "${params.name}", symbol: "${params.symbol}", decimal: ${
         params.decimal
-      },codes: "${params.codes}",abis: ${JSON.stringify(params.abis)},address: "${params.address}")
+        },codes: "${params.codes}",abis: ${JSON.stringify(params.abis)},address: "${params.address}")
     }`,
     })
     .catch(err => {
